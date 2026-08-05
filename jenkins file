@@ -24,15 +24,20 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                                   bat '''
-                if exist "C:\\apache-tomcat-9.0\\webapps\\HospitalManagement" (
-                    rmdir /S /Q "C:\\apache-tomcat-9.0\\webapps\\HospitalManagement"
-                )
+                stage('Deploy') {
+    steps {
+        bat '''
+        if exist "C:\\apache-tomcat-9.0\\webapps\\HospitalManagement" (
+            rmdir /S /Q "C:\\apache-tomcat-9.0\\webapps\\HospitalManagement"
+        )
 
-                mkdir "C:\\apache-tomcat-9.0\\webapps\\HospitalManagement"
+        mkdir "C:\\apache-tomcat-9.0\\webapps\\HospitalManagement"
 
-                xcopy * "C:\\apache-tomcat-9.0\\webapps\\HospitalManagement\\" /E /Y /I
-                '''
+        C:\\Windows\\System32\\xcopy.exe * "C:\\apache-tomcat-9.0\\webapps\\HospitalManagement\\" /E /Y /I
+        '''
+    }
+}
+            
             }
         }
     }
