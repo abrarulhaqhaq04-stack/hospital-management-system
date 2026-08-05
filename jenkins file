@@ -25,9 +25,7 @@ pipeline {
 
         bat 'ssh -i "C:\\Users\\abrar ul haq\\Downloads\\workwithAWS.pem" -o StrictHostKeyChecking=no ubuntu@16.16.205.18 "sudo rm -rf /var/lib/tomcat10/webapps/hospital && sudo mv /tmp/hospital-deploy /var/lib/tomcat10/webapps/hospital"'
     }
-}
-}
-}        
+}    
     post {
         always {
             echo 'Pipeline completed.'
