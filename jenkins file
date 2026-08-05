@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -6,7 +5,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', url:'https://github.com/abrarulhaqhaq04-stack/Hospital-Management-System.git'
+                git branch: 'main', url: 'https://github.com/abrarulhaqhaq04-stack/hospital-management-system.git'
             }
         }
 
@@ -24,36 +23,21 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                stage('Deploy') {
-    steps {
-           bat '''
-                if not exist "C:\\tomcat\\apache-tomcat-9.0.68\\webapps\\Hospital" (
-                    mkdir "C:\\tomcat\\apache-tomcat-9.0.68\\webapps\\Hospital"
-                )
-
-                robocopy . "C:\\tomcat\\apache-tomcat-9.0.68\\webapps\\Hospital" /E
-
-                if %ERRORLEVEL% LEQ 7 (
-                    exit /b 0
-                ) else (
-                    exit /b %ERRORLEVEL%
-                )
-                '''
-    }
-}  
+                bat 'if exist "C:\\tomcat\\apache-tomcat-9.0.68\\webapps\\hospital" rmdir /S /Q "C:\\tomcat\\apache-tomcat-9.0.68\\webapps\\hospital"'
+                bat 'mkdir "C:\\tomcat\\apache-tomcat-9.0.68\\webapps\\hospital"'
+                bat 'C:\\Windows\\System32\\xcopy.exe * "C:\\tomcat\\apache-tomcat-9.0.68\\webapps\\hospital\\" /E /Y /I'
             }
         }
+
     }
 
     post {
         always {
             echo 'Pipeline completed.'
         }
-
         success {
-            echo 'Build Successful!'
+            echo 'Build Succeeded!'
         }
-
         failure {
             echo 'Build Failed!'
         }
