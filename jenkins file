@@ -29,6 +29,7 @@ steps{
 }
     }
 }
+}
     post {
         always {
             echo 'Pipeline completed.'
