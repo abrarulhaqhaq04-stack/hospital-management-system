@@ -1,45 +1,43 @@
 pipeline {
     agent any
 
+    environment {
+        TOMCAT_PATH = "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\hospital"
+    }
+
     stages {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/abrarulhaqhaq04-stack/hospital-management-system.git'
+                git branch: 'main',
+                    url: 'https://github.com/abrarulhaqhaq04-stack/hospital-management-system.git'
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Building the project...'
+                echo 'Static website - No build required'
             }
         }
 
-        stage('Test') {
+        stage('Deploy') {
             steps {
-                echo 'Running tests...'
+                bat """
+                if exist "%TOMCAT_PATH%" rmdir /S /Q "%TOMCAT_PATH%"
+                mkdir "%TOMCAT_PATH%"
+                xcopy *.html "%TOMCAT_PATH%\\" /Y
+                xcopy css "%TOMCAT_PATH%\\css\\" /E /I /Y
+                """
             }
         }
-      stage('Deploy'){
-steps{
-
-       sshagent(['ec2-ssh-key']) {
-    bat 'scp -o StrictHostKeyChecking=no -r *.html css ubuntu@16.16.205.18:/tmp/hospital-deploy'
-    bat 'ssh -o StrictHostKeyChecking=no ubuntu@16.16.205.18 "sudo rm -rf /var/lib/tomcat10/webapps/hospital && sudo mv /tmp/hospital-deploy /var/lib/tomcat10/webapps/hospital"'
-}
     }
-}
-}
+
     post {
-        always {
-            echo 'Pipeline completed.'
-        }
         success {
-            echo 'Build Succeeded!'
+            echo 'Deployment Successful!'
         }
         failure {
-            echo 'Build Failed!'
+            echo 'Deployment Failed!'
         }
     }
 }
-
