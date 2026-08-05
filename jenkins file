@@ -20,17 +20,16 @@ pipeline {
                 echo 'Running tests...'
             }
         }
-
-        stage('Deploy') {
-            steps {
-                bat 'if exist "C:\\tomcat\\apache-tomcat-9.0.68\\webapps\\hospital" rmdir /S /Q "C:\\tomcat\\apache-tomcat-9.0.68\\webapps\\hospital"'
-                bat 'mkdir "C:\\tomcat\\apache-tomcat-9.0.68\\webapps\\hospital"'
-                bat 'C:\\Windows\\System32\\xcopy.exe * "C:\\tomcat\\apache-tomcat-9.0.68\\webapps\\hospital\\" /E /Y /I'
-            }
+          stage('Deploy') {
+         steps {
+        sshagent(credentials: ['ec2-ssh-key']) {
+            bat 'scp -o StrictHostKeyChecking=no -r *.html css ubuntu@16.16.205.18:/tmp/hospital-deploy'
+            bat 'ssh -o StrictHostKeyChecking=no ubuntu@16.16.205.18 "sudo rm -rf /var/lib/tomcat10/webapps/hospital && sudo mv /tmp/hospital-deploy /var/lib/tomcat10/webapps/hospital"'
         }
-
     }
+}
 
+        
     post {
         always {
             echo 'Pipeline completed.'
