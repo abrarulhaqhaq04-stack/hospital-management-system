@@ -1,1 +1,45 @@
 
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/abrarulhaqhaq04-stack/Hospital-Management-System.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building the project...'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying application...'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed.'
+        }
+
+        success {
+            echo 'Build Successful!'
+        }
+
+        failure {
+            echo 'Build Failed!'
+        }
+    }
+}
