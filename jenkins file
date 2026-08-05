@@ -19,13 +19,13 @@ pipeline {
                 echo 'Running tests...'
             }
         }
-          stage('Deploy') {
-         steps {
-        sshagent(credentials: ['ec2-ssh-key']) {
-            bat 'scp -o StrictHostKeyChecking=no -r *.html css ubuntu@16.16.205.18:/tmp/hospital-deploy'
-            bat 'ssh -o StrictHostKeyChecking=no ubuntu@16.16.205.18 "sudo rm -rf /var/lib/tomcat10/webapps/hospital && sudo mv /tmp/hospital-deploy /var/lib/tomcat10/webapps/hospital"'
-        }
+        stage('Deploy') {
+    steps {
+        bat 'scp -i "C:\\Users\\abrar ul haq\\Downloads\\workwithAWS.pem" -o StrictHostKeyChecking=no -r *.html css ubuntu@16.16.205.18:/tmp/hospital-deploy'
+
+        bat 'ssh -i "C:\\Users\\abrar ul haq\\Downloads\\workwithAWS.pem" -o StrictHostKeyChecking=no ubuntu@16.16.205.18 "sudo rm -rf /var/lib/tomcat10/webapps/hospital && sudo mv /tmp/hospital-deploy /var/lib/tomcat10/webapps/hospital"'
     }
+}
 }
 }        
     post {
