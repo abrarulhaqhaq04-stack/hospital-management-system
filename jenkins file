@@ -1,12 +1,10 @@
 pipeline {
     agent any
-
+{
     environment {
         TOMCAT_PATH = "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\hospital"
     }
-
-    stages {
-
+   stages {
         stage('Checkout') {
             steps {
                 git branch: 'main',
