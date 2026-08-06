@@ -35,6 +35,7 @@ pipeline {
     post {
         success {
             echo 'Deployment Successful!'
+ emailext to: 'jenkinsmaler-email.gwuonqv4@zohomail-1-3.pagerduty.com',
         }
         failure {
             echo 'Deployment Failed!'
